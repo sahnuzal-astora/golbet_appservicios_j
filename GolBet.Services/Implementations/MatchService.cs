@@ -47,5 +47,16 @@ public class MatchService : IMatchService // para crear mas endpoints como filtr
         return _mapper.Map<IEnumerable<MatchDto>>(matches);
 
     }
+    // metodo getdetailasync llama al rerpositorio le pasa el id y hace el filtro por id
+
+    public async Task<MatchDetailDto?> GetDetailAsync(int id)
+
+    {
+
+        var match = await _matchRepository.GetByIdWithDetailsAsync(id);
+
+        return match is null ? null : _mapper.Map<MatchDetailDto>(match);
+        //if ternario funciona como un if (match==null) return null else return _mapper.Map<MatchDetailDto>(match) pero de forma abrerviada 
+    }
 
 }
