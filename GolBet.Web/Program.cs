@@ -6,8 +6,21 @@ using GolBet.Services.Implementations;
 
 using GolBet.Services.Interfaces;
 
+using System.Globalization;
 using GolBet.Services.Mapping;
-var builder = WebApplication.CreateBuilder(args);
+
+
+var culture = new CultureInfo("es-CO"); 
+
+CultureInfo.DefaultThreadCurrentCulture = culture; 
+
+CultureInfo.DefaultThreadCurrentUICulture = culture; 
+
+  
+
+var builder = WebApplication.CreateBuilder(args); 
+
+
 
 // 1. Agregar servicios al contenedor
 builder.Services.AddControllersWithViews();
@@ -27,6 +40,7 @@ builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepositor
 builder.Services.AddScoped<IMatchRepository, MatchRepository>();
 // AutoMapper: scans the assembly containing MappingProfile for all profiles 
 
+
 builder.Services.AddAutoMapper(typeof(MappingProfile));
 
 
@@ -34,6 +48,7 @@ builder.Services.AddAutoMapper(typeof(MappingProfile));
 // Business services 
 
 builder.Services.AddScoped<IMatchService, MatchService>();
+builder.Services.AddScoped<ITeamService, TeamService>();
 // 2. Construir la aplicación
 var app = builder.Build();
 
