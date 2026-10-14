@@ -17,7 +17,6 @@ namespace GolBet.Services.Implementations;
 
 
 public class MatchService : IMatchService // para crear mas endpoints como filtros y cosas asi relacionadas con match tiene que ser aca
-
 {
 
     private readonly IMatchRepository _matchRepository;
@@ -27,7 +26,6 @@ public class MatchService : IMatchService // para crear mas endpoints como filtr
 
 
     public MatchService(IMatchRepository matchRepository, IMapper mapper)
-
     {
 
         _matchRepository = matchRepository;
@@ -38,14 +36,10 @@ public class MatchService : IMatchService // para crear mas endpoints como filtr
 
 
 
-    public async Task<IEnumerable<MatchDto>> GetBoardAsync(MatchStatus? status = null)
-
+    public async Task<IEnumerable<MatchDto>> GetBoardAsync(MatchStatus? status = null, string? search = null)
     {
-
-        var matches = await _matchRepository.GetAllWithTeamsAsync(status);
-
+        var matches = await _matchRepository.GetAllWithTeamsAsync(status, search);
         return _mapper.Map<IEnumerable<MatchDto>>(matches);
-
     }
     // metodo getdetailasync llama al rerpositorio le pasa el id y hace el filtro por id
 

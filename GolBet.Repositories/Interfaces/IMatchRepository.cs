@@ -14,7 +14,8 @@ public interface IMatchRepository : IGenericRepository<Match>
 
 {
 
-    Task<IEnumerable<Match>> GetAllWithTeamsAsync(MatchStatus? status = null);
+    // Added optional search parameter to filter by home or away team name (case-insensitive)
+    Task<IEnumerable<Match>> GetAllWithTeamsAsync(MatchStatus? status = null, string? search = null);
 
     Task<Match?> GetByIdWithDetailsAsync(int id);
 

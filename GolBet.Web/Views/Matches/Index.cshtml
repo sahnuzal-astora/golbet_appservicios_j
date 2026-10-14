@@ -21,28 +21,28 @@
 
 <div class="d-flex gap-2 flex-wrap mb-4">
 
-    <a asp-action="Index"
+    <a asp-action="Index" asp-route-search="@(ViewBag.CurrentSearch)"
        class="btn btn-sm @(current is null ? "btn-success" : "btn-outline-success")">
 
         Todos
 
     </a>
 
-    <a asp-action="Index" asp-route-status="@MatchStatus.Scheduled"
+    <a asp-action="Index" asp-route-status="@MatchStatus.Scheduled" asp-route-search="@(ViewBag.CurrentSearch)"
        class="btn btn-sm @(current == MatchStatus.Scheduled ? "btn-success" : "btn-outline-success")">
 
         Programados
 
     </a>
 
-    <a asp-action="Index" asp-route-status="@MatchStatus.InProgress"
+    <a asp-action="Index" asp-route-status="@MatchStatus.InProgress" asp-route-search="@(ViewBag.CurrentSearch)"
        class="btn btn-sm @(current == MatchStatus.InProgress ? "btn-success" : "btn-outline-success")">
 
         En juego
 
     </a>
 
-    <a asp-action="Index" asp-route-status="@MatchStatus.Finished"
+    <a asp-action="Index" asp-route-status="@MatchStatus.Finished" asp-route-search="@(ViewBag.CurrentSearch)"
        class="btn btn-sm @(current == MatchStatus.Finished ? "btn-success" : "btn-outline-success")">
 
         Finalizados
@@ -50,6 +50,18 @@
     </a>
 
 </div>
+
+@* Search form (method GET so browser builds URL with query string) *@
+<form method="get" asp-action="Index" class="input-group mb-4">
+    <input type="text" name="search" class="form-control" placeholder="Buscar equipo..."
+           value="@(ViewBag.CurrentSearch ?? string.Empty)" />
+    @* preserve current status when searching *@
+    @if (ViewBag.CurrentStatus != null)
+    {
+        <input type="hidden" name="status" value="@((MatchStatus)ViewBag.CurrentStatus)" />
+    }
+    <button type="submit" class="btn btn-primary">Buscar</button>
+</form>
 
   
 
@@ -69,7 +81,15 @@
 
 </div>
 
-  
+@if (!Model.Any())
+{
+    <div class="alert alert-info">
+        <h5>No hay partidos para "@((ViewBag.CurrentSearch ?? string.Empty))"</h5>
+        <p>
+            <a asp-action="Index" class="btn btn-outline-secondary">Volver a la cartelera de partidos</a>
+        </p>
+    </div>
+}
 
 <div class="row row-cols-1 row-cols-md-2 row-cols-xl-3 g-4">
 
@@ -225,4 +245,4 @@
 
     }
 
-</div> 
+</div>

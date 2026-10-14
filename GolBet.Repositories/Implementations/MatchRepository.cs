@@ -24,7 +24,7 @@ public class MatchRepository : GenericRepository<Match>, IMatchRepository
 
 
 
-    public async Task<IEnumerable<Match>> GetAllWithTeamsAsync(MatchStatus? status = null)
+    public async Task<IEnumerable<Match>> GetAllWithTeamsAsync(MatchStatus? status = null, string? search = null)
 
     {
 
@@ -45,6 +45,20 @@ public class MatchRepository : GenericRepository<Match>, IMatchRepository
         if (status.HasValue)
 
             query = query.Where(m => m.Status == status.Value);
+
+
+
+        // Apply optional search filter on team names (SQL-side, case-insensitive using LOWER)
+
+        if (!string.IsNullOrWhiteSpace(search))
+
+        {
+
+            var s = search.Trim().ToLower();
+
+            query = query.Where(m => m.HomeTeam.Name.ToLower().Contains(s) || m.AwayTeam.Name.ToLower().Contains(s));
+
+        }
 
 
 
